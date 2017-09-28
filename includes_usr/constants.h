@@ -63,7 +63,8 @@ struct PCB {
 	int io_time			= UNINITIALIZED;
 };
 
-#ifdef _DEBUG
+#define _SHOWLOG
+#ifdef _SHOWLOG
 #define PRINT1(txt) std::cout<<txt<<std::endl;
 #define PRINT2(txt,txt1) std::cout<<txt<<txt1<<std::endl;
 #define PRINT3(txt,txt1,txt2) std::cout<<txt<<txt1<<txt2<<std::endl;
