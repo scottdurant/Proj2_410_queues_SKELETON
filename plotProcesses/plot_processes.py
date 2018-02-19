@@ -19,9 +19,9 @@ LOG_FILE_2_NO_IO = '../2_noIO_results.txt'
 LOG_FILE_2_IO = '../2_IO_results.txt'
 LOG_FILE_MANY_MIXED = '../MANY_MIXED_results.txt'
 
-C_LOG_FILE_2_NO_IO = '../C_2_noIO_results.txt'
-C_LOG_FILE_2_IO = '../C_2_IO_results.txt'
-C_LOG_FILE_MANY_MIXED = '../C_MANY_MIXED_results.txt'
+C_LOG_FILE_2_NO_IO = '../sampleruns/2_noIO_results.txt'
+C_LOG_FILE_2_IO = '../sampleruns/2_IO_results.txt'
+C_LOG_FILE_MANY_MIXED = '../sampleruns/MANY_MIXED_results.txt'
 
 def read_datafile(file_name):
     """loads the file data and converts it into a n,2 numpy array"""
@@ -67,13 +67,14 @@ def generate_plot(file_name,fignum,heading):
     #create and show
     plt.scatter(x,y,s=70, c=all_y_colors)
 
+if __name__ == "__main__":
+    generate_plot(C_LOG_FILE_2_NO_IO, 1, "2 process, no IO")
+    generate_plot(C_LOG_FILE_2_IO, 2, "2 processes, both IO")
+    generate_plot(C_LOG_FILE_MANY_MIXED, 3, "4-3-2-1 (1-IO 3-IO)")
 
-generate_plot(C_LOG_FILE_2_NO_IO,1, "2 process, no IO")
-generate_plot(C_LOG_FILE_2_IO,2, "2 processes, both IO")
-generate_plot(C_LOG_FILE_MANY_MIXED,3,"4-3-2-1 (1-IO 3-IO)")
+    generate_plot(LOG_FILE_2_NO_IO, 4, "STUDENT 2 process, no IO")
+    generate_plot(LOG_FILE_2_IO, 5, "STUDENT 2 processes, both IO")
+    generate_plot(LOG_FILE_MANY_MIXED, 6, "STUDENT 4-3-2-1 (1-IO 3-IO)")
 
-generate_plot(LOG_FILE_2_NO_IO,4, "STUDENT 2 process, no IO")
-generate_plot(LOG_FILE_2_IO,5, "STUDENT 2 processes, both IO")
-generate_plot(LOG_FILE_MANY_MIXED,6,"STUDENT 4-3-2-1 (1-IO 3-IO)")
+    plt.show()
 
-plt.show()
