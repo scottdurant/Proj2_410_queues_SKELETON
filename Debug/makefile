@@ -42,21 +42,22 @@ endif
 # Add inputs and outputs from these tool invocations to the build variables 
 
 # All Target
-all: Proj2_410_queues_SKELETON
+all: 410_project_2_queues
 
 # Tool invocations
-Proj2_410_queues_SKELETON: $(OBJS) $(USER_OBJS)
+410_project_2_queues: $(OBJS) $(USER_OBJS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: GCC C++ Linker'
-	g++  -o "Proj2_410_queues_SKELETON" $(OBJS) $(USER_OBJS) $(LIBS)
+	g++  -o "410_project_2_queues" $(OBJS) $(USER_OBJS) $(LIBS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 
 # Other Targets
 clean:
-	-$(RM) $(CC_DEPS)$(C++_DEPS)$(EXECUTABLES)$(C_UPPER_DEPS)$(CXX_DEPS)$(OBJS)$(CPP_DEPS)$(C_DEPS) Proj2_410_queues_SKELETON
+	-$(RM) $(CC_DEPS)$(C++_DEPS)$(EXECUTABLES)$(C_UPPER_DEPS)$(CXX_DEPS)$(OBJS)$(CPP_DEPS)$(C_DEPS) 410_project_2_queues
 	-@echo ' '
 
 .PHONY: all clean dependents
+.SECONDARY:
 
 -include ../makefile.targets
