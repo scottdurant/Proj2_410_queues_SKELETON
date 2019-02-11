@@ -25,7 +25,7 @@ const int	NUMBER_CYCLES_BETWEEN_IO_INTERRUPTS = 10;
 	int tickcount			= TIMER_BEGIN;			//used by io interrupts can be a large number, BTW the first person who
 													//tells me if this is an overflow risk gets 2 points added to this project
 	int iRetDispatcher		= UNINITIALIZED;
-	bool switchProcess		= false;				//when true the dispatcher will switch the running process for another
+	//bool switchProcess		= false;				//when true the dispatcher will switch the running process for another
 	bool jobsWaitingForIoInterrupt	= false;		//assumme best
 	bool showJobListEmptyMessage	= true;
 
@@ -134,6 +134,8 @@ const int	NUMBER_CYCLES_BETWEEN_IO_INTERRUPTS = 10;
 	} while (iRetJobs != NO_JOBS || iRetDispatcher != NO_JOBS);
 
 	ST_LOG::save(pLogfile);
+	// I added this:
+	return SUCCESS;
 }
 
 int main() {
