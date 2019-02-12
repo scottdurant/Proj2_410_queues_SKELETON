@@ -31,6 +31,7 @@ PCB dispatcher::getCurrentJob() {
 
 //add a job to the ready queue
 void dispatcher::addJob(PCB &myPCB) {
+	ready_Q.push(myPCB);
 }
 
 //interrupt can be either;

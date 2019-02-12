@@ -75,7 +75,7 @@ const int	NUMBER_CYCLES_BETWEEN_IO_INTERRUPTS = 10;
 				//a job is ready pull from joblist and add to dispatcher
 				PCB newJob = joblist::getNextJob();
 				dispatcher::addJob(newJob);
-				PRINT4("	JobList: Added job:", newJob.process_number, " at time:", tickcount);
+				PRINT4("	JobList: ADDED JOB:", newJob.process_number, " at time:", tickcount);
 			}
 			break;
 			case WAITING_TO_ADD_JOB_TO_DISPATCHER:
@@ -138,25 +138,25 @@ const int	NUMBER_CYCLES_BETWEEN_IO_INTERRUPTS = 10;
 	return SUCCESS;
 }
 
-/*int main() {
+int main() {
 	std::remove(LOG_FILE_1_NO_IO);
 	runTest(SOURCE_FILE_1_NO_IO, LOG_FILE_1_NO_IO);
 
-	std::remove(LOG_FILE_1_IO);
+	/*std::remove(LOG_FILE_1_IO);
 	runTest(SOURCE_FILE_1_IO, LOG_FILE_1_IO);
 
 	std::remove(LOG_FILE_2_IO);
 	runTest(SOURCE_FILE_2_IO, LOG_FILE_2_IO);
 
 	std::remove(LOG_FILE_2_noIO);
-	runTest(SOURCE_FILE_2_noIO, LOG_FILE_2_noIO);WAITING_TO_ADD_JOBS_TO_DISPATCHER
+	runTest(SOURCE_FILE_2_noIO, LOG_FILE_2_noIO);
 
 	std::remove(LOG_FILE_2_MIXED);
 	runTest(SOURCE_FILE_2_MIXED, LOG_FILE_2_MIXED);
 
 	std::remove(LOG_FILE_MANY_MIXED);
-	runTest(SOURCE_FILE_MANY_MIXED, LOG_FILE_MANY_MIXED);
+	runTest(SOURCE_FILE_MANY_MIXED, LOG_FILE_MANY_MIXED);*/
 
 	return SUCCESS;
-}*/
+}
 

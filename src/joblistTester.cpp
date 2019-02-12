@@ -21,18 +21,10 @@ const char* 		BOGUS_FILE = "BOGUS.txt";
 const char*		 	RESULTS_FILE = "results.txt";
 using namespace std;
 
-int main() {
+///////////////////// uncomment main to use this /////////////////////////////////////
+/*int main() {
 	int total_points = 100; //assumme success
 	int iRet = FAIL;
-
-	//verify return COULD_NOT_OPEN_FILE
-/*	iRet = loadData(BOGUS_FILE);
-	if (iRet != COULD_NOT_OPEN_FILE){
-		total_points =total_points-10;
-		cout<<"-10 failed to return COULD_NOT_OPEN_FILE on bogus file"<<endl;
-	}
-	else
-		cout<<"Success 1"<<endl;*/
 
 
 	iRet = joblist::init(BOGUS_FILE);
@@ -100,6 +92,6 @@ int main() {
 
 
 	return iRet;
-}
+}*/
 
 
