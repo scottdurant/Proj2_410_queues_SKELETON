@@ -10,11 +10,16 @@ bool joblistHasJobs = false;
 // loads data from filename and sorts
 // it by job start time
 int joblist::init(const char* filename) {
-	loadData(filename);
+	int iRet = loadData(filename);
+	if(iRet == COULD_NOT_OPEN_FILE){
+		return COULD_NOT_OPEN_FILE;
+	}
+
 	sortData(SORT_ORDER::START_TIME);
 	return SUCCESS;
 }
 
+//gets next job from file_IO
 PCB joblist::getNextJob() {
 	return getNext();
 }

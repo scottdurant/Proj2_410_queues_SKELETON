@@ -138,7 +138,7 @@ const int	NUMBER_CYCLES_BETWEEN_IO_INTERRUPTS = 10;
 	return SUCCESS;
 }
 
-int main() {
+/*int main() {
 	std::remove(LOG_FILE_1_NO_IO);
 	runTest(SOURCE_FILE_1_NO_IO, LOG_FILE_1_NO_IO);
 
@@ -149,7 +149,7 @@ int main() {
 	runTest(SOURCE_FILE_2_IO, LOG_FILE_2_IO);
 
 	std::remove(LOG_FILE_2_noIO);
-	runTest(SOURCE_FILE_2_noIO, LOG_FILE_2_noIO);
+	runTest(SOURCE_FILE_2_noIO, LOG_FILE_2_noIO);WAITING_TO_ADD_JOBS_TO_DISPATCHER
 
 	std::remove(LOG_FILE_2_MIXED);
 	runTest(SOURCE_FILE_2_MIXED, LOG_FILE_2_MIXED);
@@ -158,5 +158,5 @@ int main() {
 	runTest(SOURCE_FILE_MANY_MIXED, LOG_FILE_MANY_MIXED);
 
 	return SUCCESS;
-}
+}*/
 
