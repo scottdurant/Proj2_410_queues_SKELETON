@@ -42,7 +42,48 @@ int dispatcher::processInterrupt(int interrupt) {
 	return NO_JOBS;
 }
 
+
 //see flowchart
 int dispatcher::doTick() {
-	return NO_JOBS;
+	int returnVal = FAIL;
+	// is there a runningPCB?    ////// may need to check each individual value????
+	if (runningPCB.cpu_time != UNINITIALIZED && runningPCB.io_time != UNINITIALIZED && runningPCB.process_number != UNINITIALIZED && runningPCB.start_time != UNINITIALIZED) {
+		// subtract 1 from cpu time
+		runningPCB.cpu_time = runningPCB.cpu_time - 1;
+
+		// is current job finished?
+		if (runningPCB.cpu_time == 0) {
+
+			// does runningPCB make a blocking IO call?
+			if (runningPCB.io_time == 1) {
+				blocked_Q.push(runningPCB);
+				returnVal = PCB_ADDED_TO_BLOCKED_QUEUE;
+				// Unload or mark runningPCB as invalid ////////////////////////////
+			} else {
+				///// runningPCB does NOT make blocking IO call /////
+				returnVal = PCB_FINISHED;
+				// unload or make runningPCB invalid
+			}
+		} else {     ///// current job NOT finished /////
+			return PCB_CPUTIME_DECREMENTED;
+		}
+	} else {
+		//////////// there is NOT a runningPCB ////////////////
+		// Is ready_Q empty?
+		if (ready_Q.empty()) {
+			if (blocked_Q.empty()) {
+				// both queues are empty, return NO_JOBS
+				return NO_JOBS;
+			}
+			// just ready_Q is empty
+			return BLOCKED_JOBS;
+		} else {     ///// ready_Q NOT empty //////
+			// load a job into runningPCB
+			runningPCB = ready_Q.front(); // is this right???????????????????????????
+			ready_Q.pop(); // remove the next element?
+			return PCB_MOVED_FROM_READY_TO_RUNNING;
+		}
+	}
+
+	return returnVal;
 }

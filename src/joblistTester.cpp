@@ -1,16 +1,3 @@
-/*
- * fileio.cpp
- *
- *  Created on: Sep 16, 2017
- *      Author: keith
- */
-
-//============================================================================
-// Name        : Proj1_410.cpp
-// Author      :
-// Version     :
-// Copyright   : Your copyright notice
-//============================================================================
 
 #include <iostream>
 #include "../includes_usr/file_io.h"
