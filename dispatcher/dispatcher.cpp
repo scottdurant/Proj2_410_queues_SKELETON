@@ -35,19 +35,64 @@ void dispatcher::addJob(PCB &myPCB) {
 }
 
 //interrupt can be either;
-//a switch process interrupt in which case the function performs the appropriate tasks and returns PCB_SWITCHED_PROCESSES
-//or a io_complete interrupt in which case it pulls ALL processes off of the blockedQ and returns either PCB_MOVED_FROM_BLOCKED_TO_READY (if there were any)
+//a switch process interrupt (1) in which case the function performs the appropriate tasks and returns PCB_SWITCHED_PROCESSES
+//or a io_complete interrupt (0) in which case it pulls ALL processes off of the blockedQ and returns either PCB_MOVED_FROM_BLOCKED_TO_READY (if there were any)
 //or PCB_BLOCKED_QUEUE_EMPTY if there were none.
 int dispatcher::processInterrupt(int interrupt) {
-	return NO_JOBS;
-}
+	if (interrupt == SWITCH_PROCESS) {
+		//////////  timeslice interrupt  //////////
+		if (ready_Q.empty() && blocked_Q.empty()) {
+			return NO_JOBS;
+		}
 
+		if (ready_Q.empty() && !blocked_Q.empty()) {
+			return BLOCKED_JOBS;
+		}
+
+		// there are jobs to switch to
+		PCB tmpPCB = ready_Q.front();
+
+		if (runningPCB.cpu_time != UNINITIALIZED
+				&& runningPCB.io_time != UNINITIALIZED
+				&& runningPCB.process_number != UNINITIALIZED
+				&& runningPCB.start_time != UNINITIALIZED) {
+
+			ready_Q.push(runningPCB);
+			runningPCB = tmpPCB;
+			return PCB_SWITCHED_PROCESSES;
+		}
+
+
+		} else if (interrupt == IO_COMPLETE) {
+			//////////  io complete interrupt  //////////
+
+			if (!blocked_Q.empty()) {
+				// add all jobs in blocked_Q back to ready_Q if there are any
+				int blocked_QSize = blocked_Q.size();
+				for (int i = 0; i < blocked_QSize; i++) {
+					ready_Q.push(blocked_Q.front());
+				}
+				return PCB_MOVED_FROM_BLOCKED_TO_READY;
+			} else {
+				// no jobs on blocked_Q
+				return PCB_BLOCKED_QUEUE_EMPTY;
+			}
+
+		} else {
+			return PCB_UNIMPLEMENTED;
+		}
+
+		return NO_JOBS;
+	}
 
 //see flowchart
 int dispatcher::doTick() {
 	int returnVal = FAIL;
-	// is there a runningPCB?    ////// may need to check each individual value????
-	if (runningPCB.cpu_time != UNINITIALIZED && runningPCB.io_time != UNINITIALIZED && runningPCB.process_number != UNINITIALIZED && runningPCB.start_time != UNINITIALIZED) {
+	// is there a runningPCB?
+	if (runningPCB.cpu_time != UNINITIALIZED
+			&& runningPCB.io_time != UNINITIALIZED
+			&& runningPCB.process_number != UNINITIALIZED
+			&& runningPCB.start_time != UNINITIALIZED) {
 		// subtract 1 from cpu time
 		runningPCB.cpu_time = runningPCB.cpu_time - 1;
 
@@ -58,13 +103,25 @@ int dispatcher::doTick() {
 			if (runningPCB.io_time == 1) {
 				blocked_Q.push(runningPCB);
 				returnVal = PCB_ADDED_TO_BLOCKED_QUEUE;
-				// Unload or mark runningPCB as invalid ////////////////////////////
+
+				// mark runningPCB as invalid
+				runningPCB.cpu_time = UNINITIALIZED;
+				runningPCB.io_time = UNINITIALIZED;
+				runningPCB.process_number = UNINITIALIZED;
+				runningPCB.start_time = UNINITIALIZED;
+
 			} else {
 				///// runningPCB does NOT make blocking IO call /////
 				returnVal = PCB_FINISHED;
+
 				// unload or make runningPCB invalid
+				runningPCB.cpu_time = UNINITIALIZED;
+				runningPCB.io_time = UNINITIALIZED;
+				runningPCB.process_number = UNINITIALIZED;
+				runningPCB.start_time = UNINITIALIZED;
 			}
-		} else {     ///// current job NOT finished /////
+		} else {
+			///// current job NOT finished /////
 			return PCB_CPUTIME_DECREMENTED;
 		}
 	} else {
@@ -79,8 +136,8 @@ int dispatcher::doTick() {
 			return BLOCKED_JOBS;
 		} else {     ///// ready_Q NOT empty //////
 			// load a job into runningPCB
-			runningPCB = ready_Q.front(); // is this right???????????????????????????
-			ready_Q.pop(); // remove the next element?
+			runningPCB = ready_Q.front();// is this right???????????????????????????
+			ready_Q.pop();// remove the next element?
 			return PCB_MOVED_FROM_READY_TO_RUNNING;
 		}
 	}
